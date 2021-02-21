@@ -34,11 +34,12 @@ class Board:
                 cell_status = self.grid[i][j].status
                 new_cell_status = self.check_nei(i, j)
                 if new_cell_status != cell_status:
-                    index.append((i,j, new_cell_status))
+                    index.append([(i,j), new_cell_status])
         # Update grid by looping over changed cells and change status
         for el in index:
-            cell = self.grid[el[0]][el[1]]
-            if el[2] == 'Alive':
+            position, new_status = el
+            cell = self.grid[position[0]][position[1]] 
+            if new_status == 'Alive':
                 cell.set_alive()
             else:
                 cell.set_dead() 
