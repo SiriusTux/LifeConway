@@ -1,21 +1,21 @@
 
 class Cell:
 
-    # A cell is created with status = Dead
+    # A cell is created with status = Dead (0)
     def __init__(self):
-        self.status = 'Dead'
+        self.status = 0
 
     # Set cell status to dead
     def set_dead(self):
-        self.status = 'Dead'
+        self.status = 0
 
     # Set cell status to alive
     def set_alive(self):
-        self.status = 'Alive'
+        self.status = 1
 
     # Check if a cell is alive
     def is_alive(self):
-        return self.status == 'Alive'
+        return self.status == 1
 
     # What the boart should print
     def get_print_char(self):

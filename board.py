@@ -32,78 +32,46 @@ class Board:
         for i in range(self.rows):
             for j in range(self.columns):
                 cell_status = self.grid[i][j].status
-                new_cell_status = self.check_nei(i, j)
+                new_cell_status = self.new_status(i, j)
                 if new_cell_status != cell_status:
                     index.append([(i,j), new_cell_status])
         # Update grid by looping over changed cells and change status
         for el in index:
             position, new_status = el
             cell = self.grid[position[0]][position[1]] 
-            if new_status == 'Alive':
+            if new_status == 1:
                 cell.set_alive()
             else:
                 cell.set_dead() 
-
     
-    def check_nei(self, row, col):
-        cell = self.grid[row][col]
-        # Get neighbour's group and count alive neighbours
-        cell_nei = self.get_nei(row, col)
-        nei_alive = self.count_alive(cell_nei)
+    def new_status(self, x, y):
+        cell = self.grid[x][y]
+        nei_alive = self.check_nei(x, y)
         # Game Life rules
-        if cell.is_alive():
+        if cell.status == 1:
             # If cell is alive, cell dies if number of alive neighbours is less than 2 or greater than 3,
             # cell remains alive if number of alive neighbours is exactly 2 or 3
             if nei_alive < 2 or nei_alive > 3:
-                return 'Dead'
+                return 0
             else:
-                return 'Alive'
+                return 1
         else:
             # If cell is dead, cell reborns if it has exactly 3 neighbours
             # otherwise it remains dead
             if nei_alive == 3:
-                return 'Alive'
+                return 1
             else:
-                return 'Dead'
-
-    def count_alive(self, group):
-        # Count number of alive neighbours
-        count = 0
-        for cell in group:
-            if cell.is_alive():
-                count += 1
-        return count
-
-    def get_nei(self, row, col):
-        up, down, right, left = self.get_step(row, col)
-        # Take all neighbours in generic case
-        nei =   [ 
-                    self.grid[row-up][col-left], self.grid[row-up][col], self.grid[row-up][col+right],
-                    self.grid[row][col-left], self.grid[row][col], self.grid[row][col+right],
-                    self.grid[row+down][col-left], self.grid[row+down][col], self.grid[row+down][col+right]
-        ]
-        # Remove duplicated neighbours, due to steps combination (es. if up=0 self.grid[row-up][col]=self.grid[row][col])
-        nei = list(set(nei))
-        # Remove central cell
-        nei.remove(self.grid[row][col])
-        return nei
-
-    def get_step(self, row, col):
-        # Start with all zero step
-        up_step, down_step, right_step, left_step = 0, 0, 0, 0
-        # If first row, no up step 
-        if row > 0:
-            up_step = 1
-        # If last row you, no down step
-        if row < self.rows - 1:
-            down_step = 1
-        # If first column, no left step
-        if col > 0:
-            left_step = 1
-        # If last column, no right step
-        if col < self.columns - 1:
-            right_step = 1
-        return up_step, down_step, right_step, left_step 
-
+                return 0
+    
+    def check_nei(self, x, y):
+        cell = self.grid[x][y]
+        sum = 0
+        for i in [-1, 0, 1]:
+            for j in [-1, 0, 1]:
+                a = (x + i + self.rows) % self.rows
+                b = (y + j + self.columns) % self.columns
+                sum += self.grid[a][b].status
+        sum -= cell.status
+        return sum
 
 
