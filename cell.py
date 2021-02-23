@@ -1,6 +1,7 @@
 
 class Cell:
 
+    # A cell i create in position (x, y)
     # A cell is created with status = Dead (0)
     def __init__(self, x, y):
         self.x = x
