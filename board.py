@@ -6,7 +6,7 @@ class Board:
     def __init__(self, rows, columns):
         self.rows = rows
         self.columns = columns
-        self.grid = [[Cell() for j in range(self.columns)] for i in range(self.rows)]
+        self.grid = [[Cell(i, j) for j in range(self.columns)] for i in range(self.rows)]
         self.generate_board()
 
     def generate_board(self):
@@ -31,22 +31,20 @@ class Board:
         # save position and new status of these cells in the list index
         for i in range(self.rows):
             for j in range(self.columns):
-                cell_status = self.grid[i][j].status
-                new_cell_status = self.new_status(i, j)
-                if new_cell_status != cell_status:
-                    index.append([(i,j), new_cell_status])
+                cell = self.grid[i][j]
+                new_cell_status = self.new_status(cell)
+                if new_cell_status != cell.status:
+                    index.append([cell, new_cell_status])
         # Update grid by looping over changed cells and change status
         for el in index:
-            position, new_status = el
-            cell = self.grid[position[0]][position[1]] 
+            cell, new_status = el
             if new_status == 1:
                 cell.set_alive()
             else:
                 cell.set_dead() 
     
-    def new_status(self, x, y):
-        cell = self.grid[x][y]
-        nei_alive = self.check_nei(x, y)
+    def new_status(self, cell):
+        nei_alive = self.check_nei(cell)
         # Game Life rules
         if cell.status == 1:
             # If cell is alive, cell dies if number of alive neighbours is less than 2 or greater than 3,
@@ -63,13 +61,12 @@ class Board:
             else:
                 return 0
     
-    def check_nei(self, x, y):
-        cell = self.grid[x][y]
+    def check_nei(self, cell):
         sum = 0
         for i in [-1, 0, 1]:
             for j in [-1, 0, 1]:
-                a = (x + i + self.rows) % self.rows
-                b = (y + j + self.columns) % self.columns
+                a = (cell.x + i + self.rows) % self.rows
+                b = (cell.y + j + self.columns) % self.columns
                 sum += self.grid[a][b].status
         sum -= cell.status
         return sum

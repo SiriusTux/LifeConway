@@ -2,7 +2,9 @@
 class Cell:
 
     # A cell is created with status = Dead (0)
-    def __init__(self):
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
         self.status = 0
 
     # Set cell status to dead
