@@ -2,8 +2,7 @@ from board import Board
 
 def main():
     user_rows = int(input('Insert number of rows: '))
-    user_columns = int(input('Insert number of columns: '))
-
+    user_columns = int(input('Insert number of columns: '))                 
     game_board = Board(user_rows, user_columns)
 
     game_board.print_board()
@@ -18,5 +17,6 @@ def main():
             game_board.update_board()
             game_board.print_board()
 
+if __name__ == '__main__':
+    main()
 
-main()
