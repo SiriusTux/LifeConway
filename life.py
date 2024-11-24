@@ -18,5 +18,8 @@ def main():
             game_board.print_board()
 
 if __name__ == '__main__':
+    print('#####################################')
+    print('# Welcome to Life Conway simulation #')
+    print('#####################################')
     main()
 
