@@ -1,4 +1,4 @@
-from board import Board
++from board import Board
 
 def main():
     user_rows = int(input('Insert number of rows: '))
@@ -14,7 +14,6 @@ def main():
         user_action = input('Press any Enter to continue or q to quit: ')
 
         if user_action == '':
-            # Update game board
             game_board.update_board()
             game_board.print_board()
 
